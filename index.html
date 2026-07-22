@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Modular Private Vault</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="top-row">
+    <button class="btn" id="pickFolder">📁 Connect</button>
+    <input type="text" id="search" placeholder="Search tags/names...">
+    <button class="btn btn-success" id="saveMetaBtn">💾 Save</button>
+  </div>
+  <div class="tag-filter-bar" id="tagFilterBar"></div>
+  <p id="status">No folder connected</p>
+</header>
+
+<main class="content-area">
+  <div id="images"></div>
+</main>
+
+<div id="lightbox">
+  <span class="close-lb">&times;</span>
+  <img id="lbImg" src="">
+</div>
+
+<!-- Load Main Application as an ES Module -->
+<script type="module" src="app.js"></script>
+</body>
+</html>
