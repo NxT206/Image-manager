@@ -27,8 +27,7 @@ export function renderTagFilterBar(imagesMap, activeFilters, onFilterChange) {
   });
 }
 
-export function renderCardTags(filename, imagesMap, onTagUpdate) {
-  const card = document.querySelector(`.card[data-filename="${CSS.escape(filename.toLowerCase())}"]`);
+export function renderCardTags(card, filename, imagesMap, onTagUpdate) {
   if (!card) return;
 
   const tagContainer = card.querySelector(".card-tags");
@@ -45,8 +44,10 @@ export function renderCardTags(filename, imagesMap, onTagUpdate) {
     badge.querySelector(".del").addEventListener("click", (e) => {
       e.stopPropagation();
       currentData.tags = currentData.tags.filter(t => t !== tag);
+      renderCardTags(card, filename, imagesMap, onTagUpdate);
       onTagUpdate();
     });
+
     tagContainer.appendChild(badge);
   });
 }
