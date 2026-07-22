@@ -71,7 +71,7 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
 
       if (val && !currentData.tags.includes(val)) {
         currentData.tags.push(val);
-        renderCardTags(filename, imagesMap, onUpdate);
+        renderCardTags(card, filename, imagesMap, onUpdate);
         onUpdate();
       }
       tagInput.value = "";
@@ -86,5 +86,5 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
   card.appendChild(cardBody);
   document.getElementById("images").appendChild(card);
 
-  renderCardTags(filename, imagesMap, onUpdate);
+  renderCardTags(card, filename, imagesMap, onUpdate);
 }
