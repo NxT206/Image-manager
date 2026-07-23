@@ -2,10 +2,13 @@ import { loadMetadata } from "./metadata.js";
 import { renderCardTags, openTagSelectorModal } from "./tags.js";
 import { openLightbox } from "./lightbox.js";
 
+export const selectedFilenames = new Set();
+
 export async function connectVault(imagesMap, onVaultLoaded) {
   try {
     const folderHandle = await window.showDirectoryPicker();
     imagesMap.clear();
+    selectedFilenames.clear();
     document.getElementById("images").innerHTML = "";
 
     const savedMetadata = await loadMetadata(folderHandle);
@@ -43,9 +46,28 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
   const imgWrapper = document.createElement("div");
   imgWrapper.className = "card-img-wrapper";
 
+  // Checkbox for Batch Selection
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.className = "card-checkbox";
+  
+  checkbox.addEventListener("change", (e) => {
+    e.stopPropagation();
+    if (checkbox.checked) {
+      selectedFilenames.add(filename);
+      card.classList.add("selected");
+    } else {
+      selectedFilenames.delete(filename);
+      card.classList.remove("selected");
+    }
+    onUpdate();
+  });
+
   const img = document.createElement("img");
   img.src = URL.createObjectURL(file);
   img.addEventListener("click", () => openLightbox(img.src));
+
+  imgWrapper.appendChild(checkbox);
   imgWrapper.appendChild(img);
 
   const cardBody = document.createElement("div");
@@ -64,20 +86,34 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
   tagBtn.style.fontSize = "11px";
   tagBtn.style.width = "100%";
   tagBtn.textContent = "+ Tags";
-
+  
   tagBtn.addEventListener("click", () => {
-    document.getElementById("status").textContent = `Clicked: ${filename}`;
-    console.log("Clicked:", filename);
-
     openTagSelectorModal(filename, imagesMap, () => {
       renderCardTags(card, filename, imagesMap);
       onUpdate();
     });
   });
 
-  cardBody.append(title, tagContainer, tagBtn);
-  card.append(imgWrapper, cardBody);
+  cardBody.appendChild(title);
+  cardBody.appendChild(tagContainer);
+  cardBody.appendChild(tagBtn);
+
+  card.appendChild(imgWrapper);
+  card.appendChild(cardBody);
   document.getElementById("images").appendChild(card);
 
   renderCardTags(card, filename, imagesMap);
+}
+
+export function updateBatchUI() {
+  const batchTagBtn = document.getElementById("batchTagBtn");
+  const selectCount = document.getElementById("selectCount");
+  const count = selectedFilenames.size;
+
+  if (count > 0) {
+    batchTagBtn.style.display = "inline-flex";
+    selectCount.textContent = count;
+  } else {
+    batchTagBtn.style.display = "none";
+  }
 }
