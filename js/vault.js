@@ -1,5 +1,5 @@
 import { loadMetadata } from "./metadata.js";
-import { renderCardTags } from "./tags.js";
+import { renderCardTags, openTagSelectorModal } from "./tags.js";
 import { openLightbox } from "./lightbox.js";
 
 export async function connectVault(imagesMap, onVaultLoaded) {
@@ -46,7 +46,6 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
   const img = document.createElement("img");
   img.src = URL.createObjectURL(file);
   img.addEventListener("click", () => openLightbox(img.src));
-
   imgWrapper.appendChild(img);
 
   const cardBody = document.createElement("div");
@@ -59,32 +58,23 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
   const tagContainer = document.createElement("div");
   tagContainer.className = "card-tags";
 
-  const tagInput = document.createElement("input");
-  tagInput.className = "quick-tag-input";
-  tagInput.placeholder = "+ Add tag";
+  const tagBtn = document.createElement("button");
+  tagBtn.className = "btn";
+  tagBtn.style.padding = "4px 8px";
+  tagBtn.style.fontSize = "11px";
+  tagBtn.style.width = "100%";
+  tagBtn.textContent = "+ Tags";
 
-  tagInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const val = tagInput.value.toLowerCase().trim();
-      const currentData = imagesMap.get(filename);
-
-      if (val && !currentData.tags.includes(val)) {
-        currentData.tags.push(val);
-        renderCardTags(card, filename, imagesMap, onUpdate);
-        onUpdate();
-      }
-      tagInput.value = "";
-    }
+  tagBtn.addEventListener("click", () => {
+    openTagSelectorModal(filename, imagesMap, () => {
+      renderCardTags(card, filename, imagesMap);
+      onUpdate();
+    });
   });
 
-  cardBody.appendChild(title);
-  cardBody.appendChild(tagContainer);
-  cardBody.appendChild(tagInput);
-
-  card.appendChild(imgWrapper);
-  card.appendChild(cardBody);
+  cardBody.append(title, tagContainer, tagBtn);
+  card.append(imgWrapper, cardBody);
   document.getElementById("images").appendChild(card);
 
-  renderCardTags(card, filename, imagesMap, onUpdate);
+  renderCardTags(card, filename, imagesMap);
 }
