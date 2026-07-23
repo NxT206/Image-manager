@@ -8,7 +8,16 @@
   --accent-hover: #4338ca;
   --success: #10b981;
   --danger: #ef4444;
-  --card-size: 160px;
+  
+  /* Grid sizing control */
+  --grid-columns: repeat(2, 1fr);
+  --img-height: 130px;
+}
+
+@media(min-width: 600px) {
+  :root {
+    --grid-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
 }
 
 body {
@@ -32,6 +41,7 @@ header {
   gap: 8px;
 }
 
+/* Flex wrapping prevents top bar buttons from overflowing on phones */
 .top-row {
   display: flex;
   gap: 8px;
@@ -40,7 +50,7 @@ header {
 }
 
 #search {
-  flex: 1 1 150px;
+  flex: 1 1 140px;
   min-width: 0;
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
@@ -69,6 +79,7 @@ header {
 .btn-success { background-color: var(--success); }
 .btn-danger { background-color: var(--danger); }
 
+/* Controls toolbar for Grid Mode & Sort selection */
 .controls-bar {
   display: flex;
   gap: 8px;
@@ -76,6 +87,7 @@ header {
   justify-content: space-between;
   font-size: 11px;
   color: var(--text-muted);
+  flex-wrap: wrap;
 }
 
 .controls-group {
@@ -92,11 +104,6 @@ select {
   border-radius: 4px;
   font-size: 11px;
   outline: none;
-}
-
-input[type="range"] {
-  accent-color: var(--accent);
-  width: 70px;
 }
 
 .tag-filter-bar {
@@ -131,13 +138,25 @@ input[type="range"] {
 }
 
 .content-area {
-  padding: 10px;
+  padding: 12px;
 }
 
+/* Base Grid Layout (Restored to early design) */
 #images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));
+  grid-template-columns: var(--grid-columns);
   gap: 10px;
+}
+
+/* Alternate Layout Preset Classes */
+#images.view-compact {
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  --img-height: 90px;
+}
+
+#images.view-list {
+  grid-template-columns: 1fr;
+  --img-height: 180px;
 }
 
 .card {
@@ -156,6 +175,7 @@ input[type="range"] {
   box-shadow: 0 0 0 2px var(--accent);
 }
 
+/* Checkbox overlay for selection */
 .card-checkbox {
   position: absolute;
   top: 6px;
@@ -169,7 +189,7 @@ input[type="range"] {
 
 .card-img-wrapper {
   position: relative;
-  height: 120px;
+  height: var(--img-height);
   background: #000;
 }
 
@@ -181,15 +201,15 @@ input[type="range"] {
 }
 
 .card-body {
-  padding: 6px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   flex: 1;
 }
 
 .card-title {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -200,18 +220,19 @@ input[type="range"] {
 .card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
-  min-height: 16px;
+  gap: 3px;
+  min-height: 18px;
 }
 
 .badge {
   background-color: var(--bg-color);
   color: var(--text-muted);
-  font-size: 9px;
-  padding: 1px 4px;
-  border-radius: 3px;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
 }
 
+/* Lightbox Modal */
 #lightbox {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
