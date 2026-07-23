@@ -66,6 +66,9 @@ function createImageCard(filename, file, tags, imagesMap, onUpdate) {
   tagBtn.textContent = "+ Tags";
 
   tagBtn.addEventListener("click", () => {
+    document.getElementById("status").textContent = `Clicked: ${filename}`;
+    console.log("Clicked:", filename);
+
     openTagSelectorModal(filename, imagesMap, () => {
       renderCardTags(card, filename, imagesMap);
       onUpdate();
