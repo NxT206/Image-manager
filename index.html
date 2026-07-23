@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Modular Private Vault</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -14,6 +14,26 @@
     <input type="text" id="search" placeholder="Search tags/names...">
     <button class="btn btn-success" id="saveMetaBtn">💾 Save</button>
   </div>
+
+  <div class="controls-bar">
+    <div class="controls-group">
+      <label for="viewSelect">View:</label>
+      <select id="viewSelect">
+        <option value="default">Default Grid</option>
+        <option value="compact">Compact Grid</option>
+        <option value="list">List View</option>
+      </select>
+    </div>
+
+    <!-- Batch Selection Controls -->
+    <div class="controls-group" id="batchGroup">
+      <button class="btn" id="selectAllBtn" style="padding: 4px 8px; font-size: 11px;">Select Visible</button>
+      <button class="btn btn-accent" id="batchTagBtn" style="display:none; padding: 4px 8px; font-size: 11px;">
+        🏷️ Tag Selected (<span id="selectCount">0</span>)
+      </button>
+    </div>
+  </div>
+
   <div class="tag-filter-bar" id="tagFilterBar"></div>
   <p id="status">No folder connected</p>
 </header>
@@ -27,7 +47,6 @@
   <img id="lbImg" src="">
 </div>
 
-<!-- Load Main Application as an ES Module -->
-<script type="module" src="js/app.js"></script>
+<script type="module" src="Js/app.js"></script>
 </body>
 </html>
